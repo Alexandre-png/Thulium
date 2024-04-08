@@ -1,0 +1,57 @@
+@import "./var.css";
+
+.container {
+    width: 400px; /* Fixed width for the login form */
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #0a3f5e; /* Dark blue background */
+    box-shadow: 0 0 10px rgba(0, 140, 255, 0.5), /* Neon effect */
+                 0 0 20px rgba(0, 140, 255, 0.75),
+                 0 0 40px rgba(0, 140, 255, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #ffffff; /* White color for text */
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ffffff;
+    color: #333333;
+}
+
+input.invalid {
+    border: 2px solid red; /* Highlight inputs that are invalid */
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0066cc; /* Slightly lighter blue for buttons */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+button:active {
+    transform: scale(0.98); /* Slight push on click */
+}

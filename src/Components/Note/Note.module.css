@@ -1,0 +1,39 @@
+@import "../../var.css";
+
+
+
+.container{
+    position: relative;
+    border-radius: 15px;
+    padding: 73px;
+    z-index: 1;
+    margin-left: 5%;
+    margin-right: 5%;
+    color: var(--color-text);
+}
+
+.title {
+    font-size: 35px;
+    letter-spacing: 1.75px;
+}
+
+.subtitle{
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+
+.input{
+    
+}
+
+.notes{
+    margin-top: 37px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+}
