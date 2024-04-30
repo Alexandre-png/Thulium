@@ -1,4 +1,4 @@
-@import "./var.css";
+@import "../../../var.css";
 
 .container {
     width: 400px; /* Fixed width for the login form */
