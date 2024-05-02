@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     port: 3000, // Client port
     proxy: {
-      '/note': {
+      '/api': {
         target: 'http://localhost:5100', // Server port
         changeOrigin: true,
         secure: false,

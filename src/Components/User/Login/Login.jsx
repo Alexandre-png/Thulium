@@ -8,21 +8,31 @@ export const Login = () => {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordErrors, setPasswordErrors] = useState({ minLengthValid: true, patternValid: true });
     const [isValidEmail, setIsValidEmail] = useState(true);
     const navigate = useNavigate();
 
-    // Gestionnaire d'événements pour le champ d'entrée
     const handleEmailChange = (event) => {
         const inputValue = event.target.value;
-        const isValid = validateEmail(inputValue);
         setEmail(inputValue);
-        setIsValidEmail(isValid);
+        setIsValidEmail(validateEmail(inputValue));
     }
 
-    // Fonction pour valider un email
+    const handlePasswordChange = (event) => {
+        const { value } = event.target;
+        setPassword(value);
+        setPasswordErrors(validatePassword(value));
+    };
+
     const validateEmail = (email) => {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailPattern.test(email);
+    };
+
+    const validatePassword = (password) => {
+        const minLengthValid = password.length >= 8;
+        const patternValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$/.test(password);
+        return { minLengthValid, patternValid };
     };
 
     const handleFirstNameChange = (event) => {
@@ -33,25 +43,21 @@ export const Login = () => {
         setLastName(event.target.value);
     };
 
-
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
-
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!isValidEmail || !password) {
+        const { minLengthValid, patternValid } = validatePassword(password);
+        if (!isValidEmail || !minLengthValid || !patternValid) {
             console.error('Email ou mot de passe invalide.');
             return;
         }
         try {
-            const response = await axios.post('/api/utilisateur/CreateUtilisateur', {
+            const response = await axios.post('/api/utilisateur', {
                 firstName,
                 lastName,
                 email,
                 password
             });
-            navigate('/Note');
+            handleLogin();
         } catch (error) {
             console.error('Erreur lors de la création du compte :', error);
         }
@@ -60,13 +66,12 @@ export const Login = () => {
     const handleLogin = async () => {
         try {
             const response = await axios.post('/api/utilisateur/authentification', {
-                emailOrUsername,
+                email,  // Assurez-vous que ces paramètres correspondent à ce que votre API attend
                 password
             });
-
-            history.push('/Note');
+            // Vous pourriez vouloir stocker un token de session ici si votre backend en renvoie un
+            navigate('/Note');  // Rediriger l'utilisateur vers la page des notes
         } catch (error) {
-            // Afficher un message d'erreur à l'utilisateur
             console.error('Erreur lors de l\'authentification :', error);
         }
     };
@@ -74,27 +79,37 @@ export const Login = () => {
     return (
         <div className={styles.container}>
             <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.firstName}>
-                    <label>Prénom (facultatif) </label>
-                    <input type='text' value={firstName} onChange={handleFirstNameChange} />
-                </div>
-                <div className={styles.lastName}>
-                    <label>Nom (facultatif) </label>
-                    <input type='text' value={lastName} onChange={handleLastNameChange} />
-                </div>
-                <div className={styles.email}>
-                    <label>Email </label>
-                    <input
-                        type='email'
-                        value={email}
-                        onChange={handleEmailChange}
-                        className={!isValidEmail ? styles.invalid : ''}
-                    />
-                </div>
-                <div className={styles.password}>
-                    <label>Mot de passe </label>
-                    <input type='password' value={password} onChange={handlePasswordChange} />
-                </div>
+                <label className={styles.label}>Prénom</label>
+                <input
+                    type='text'
+                    value={firstName}
+                    onChange={handleFirstNameChange}
+                    placeholder="Facultatif"
+                />
+                <label className={styles.label}>Nom</label>
+                <input
+                    type='text'
+                    value={lastName}
+                    onChange={handleLastNameChange}
+                    placeholder="Facultatif"
+                />
+                <label className={styles.label}>Email *</label>
+                <input
+                    type='email'
+                    value={email}
+                    onChange={handleEmailChange}
+                    className={!isValidEmail ? styles.invalid : ''}
+                    required
+                />
+                <label className={styles.label}>Mot de passe *</label>
+                <input
+                    type='password'
+                    value={password}
+                    onChange={handlePasswordChange}
+                    required
+                />
+                {!passwordErrors.minLengthValid && <p>Le mot de passe doit contenir au moins 8 caractères.</p>}
+                {!passwordErrors.patternValid && <p>Le mot de passe doit contenir au moins un caractère spécial, une majuscule, une minuscule et un chiffre.</p>}
                 <button type='submit'>Créer un compte</button>
             </form>
         </div>
