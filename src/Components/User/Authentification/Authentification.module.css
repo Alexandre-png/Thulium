@@ -1,0 +1,73 @@
+@import "../../../var.css";
+
+.container {
+    width: 100%;
+    max-width: 400px;  
+    padding: 25px;  
+    border-radius: var(--border-radius);
+    background: var(--color-dark);  
+    box-shadow: var(--box-shadow);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;  
+}
+
+.label {
+    font-size: 15px; 
+    color: var(--color-text);
+    display: block;
+}
+
+
+input[type='text'],
+input[type='email'],
+input[type='password'] {
+    padding: 12px;  
+    margin-bottom: 12px;
+    border-radius: var(--border-radius);
+    border: 1px solid #ccc;
+    background-color: var(--color-dark);
+    color: var(--color-text);
+}
+
+input[type='text']::placeholder,
+input[type='email']::placeholder,
+input[type='password']::placeholder {
+    color: #9a9a9a;
+    font-style: italic;
+}
+
+input.invalid {
+    border: 2px solid #e74c3c;
+}
+
+button {
+    padding: 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--color-primary);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--color-secondary);
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
