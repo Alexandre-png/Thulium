@@ -3,38 +3,38 @@ import axios from 'axios';
 import NoteList from './List/NoteList';
 import AddNoteForm from './Create/AddNoteForm';
 import styles from './Note.module.css';
+import { useUser } from '../../Context/UserContext';
 
 export const Note = () => {
     const [notes, setNotes] = useState([]);
-    const [userId, setUserId] = useState('');
+    const { userId } = useUser();
 
 
-
-    // Fonction pour récupérer les notes de l'utilisateur
     const fetchNotes = async () => {
+        if (!userId) return;
         try {
-            const response = await axios.get(`http://localhost:5100/api/Note/${userId}/notes`);
+            const response = await axios.get(`/api/Note/${userId}/notes`);
             setNotes(response.data);
         } catch (error) {
             console.error('Erreur lors de la récupération des notes:', error);
         }
     };
 
-    // Effet pour charger les notes lorsque l'ID utilisateur change
     useEffect(() => {
-        fetchNotes();
+        if (userId) {
+            fetchNotes();
+        }
     }, [userId]);
 
     // Fonction pour ajouter une note
-    const handleAddNote = () => {
-        // Mettre à jour la liste des notes après l'ajout d'une nouvelle note
+    const handleAddNote = async () => {
         fetchNotes();
     };
 
     // Fonction pour supprimer une note
     const handleDeleteNote = async (id) => {
         try {
-            await axios.delete(`http://localhost:5100/api/Note/${id}`);
+            await axios.delete(`/api/Note/${id}`);
             setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
         } catch (error) {
             console.error('Erreur lors de la suppression de la note:', error);
@@ -48,10 +48,6 @@ export const Note = () => {
                 <NoteList notes={notes} onDeleteNote={handleDeleteNote} />
             </div>
             <AddNoteForm onAddNote={handleAddNote} />
-
-            <h1 className={styles.title}>Test </h1>
-            <label className={styles.subtitle}>Entrez l'ID de l'utilisateur :</label>
-            <input type="text" className={styles.input} value={userId} onChange={(e) => setUserId(e.target.value)} />
         </div>
     );
 

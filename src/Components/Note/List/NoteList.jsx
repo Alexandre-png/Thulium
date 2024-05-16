@@ -6,18 +6,20 @@ function NoteList({ notes, onDeleteNote }) {
         <section className={styles.container} id='note'>
             <h2 className={styles.title}>Liste des notes :</h2>
             <div className={styles.notes}>
-                {notes.map(note => (
-                    <li key={note.id}>
-                        <p>Id : {note.id}</p>
-                        <p>Contenu : {note.content}</p>
-                        <p>Image URL : {note.imageUrl}</p>
-                        <button onClick={() => onDeleteNote(note.id)}>Supprimer</button>
-                        <p>test</p>
-                    </li>
-                ))}
+                {notes.length > 0 ? (
+                    notes.map(note => (
+                        <li key={note.id}>
+                            <p>Id : {note.id}</p>
+                            <p>Contenu : {note.content}</p>
+                            <p>Image URL : {note.imageUrl}</p>
+                            <button onClick={() => onDeleteNote(note.id)}>Supprimer</button>
+                        </li>
+                    ))
+                ) : (
+                    <p>Aucune note disponible. Commencez par en créer une!</p>
+                )}
             </div>
         </section>
-
     );
 }
 

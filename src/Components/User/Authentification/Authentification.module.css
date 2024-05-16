@@ -22,6 +22,21 @@
     display: block;
 }
 
+.submitButton{
+    margin: 5px;
+}
+
+.passwordRequirements {
+    font-size: 15px;
+    text-align: center;
+}
+.passwordSpecificRequirements {
+    list-style-type: none;
+    display: inline-block;
+    text-align: left;
+}
+
+
 
 input[type='text'],
 input[type='email'],
