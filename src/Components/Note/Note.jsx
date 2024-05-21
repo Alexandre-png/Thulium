@@ -7,6 +7,7 @@ import { useUser } from '../../Context/UserContext';
 
 export const Note = () => {
     const [notes, setNotes] = useState([]);
+    const [showAddForm, setShowAddForm] = useState(false);
     const { userId } = useUser();
 
 
@@ -19,13 +20,7 @@ export const Note = () => {
             console.error('Erreur lors de la récupération des notes:', error);
         }
     };
-
-    useEffect(() => {
-        if (userId) {
-            fetchNotes();
-        }
-    }, [userId]);
-
+    
     // Fonction pour ajouter une note
     const handleAddNote = async () => {
         fetchNotes();
@@ -41,13 +36,26 @@ export const Note = () => {
         }
     };
 
+    useEffect(() => {
+        if (userId) {
+            fetchNotes();
+        }
+    }, [userId]);
+
+    const toggleForm = () => setShowAddForm(!showAddForm);
+
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>Gestion des notes</h1>
-            <div className={styles.notes}>
+            <h2 className={styles.actionTitle}>{showAddForm ? "Ajout d'une note" : "Liste des notes"}</h2>
+            <button onClick={toggleForm} className={styles.floatingButton}>
+                {showAddForm ? "Retourner à mes notes" : "Ajouter une note"}
+            </button>
+            {showAddForm ? (
+                <AddNoteForm onAddNote={handleAddNote} />
+            ) : (
                 <NoteList notes={notes} onDeleteNote={handleDeleteNote} />
-            </div>
-            <AddNoteForm onAddNote={handleAddNote} />
+            )}
         </div>
     );
 

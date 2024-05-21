@@ -6,6 +6,7 @@ import { useUser } from '../../../Context/UserContext';
 function AddNoteForm({ onAddNote }) {
     const { userId } = useUser();
     const [idLivre, setIdLivre] = useState('');
+    const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageUrl, setImageUrl] = useState('');
 
@@ -16,6 +17,7 @@ function AddNoteForm({ onAddNote }) {
             const response = await axios.post('/api/Note', {
                 idOwner: userId,
                 idLivre: idLivre,
+                title: title,
                 content: content,
                 imageUrl: imageUrl
             });
@@ -23,6 +25,7 @@ function AddNoteForm({ onAddNote }) {
             onAddNote();
 
             setIdLivre('');
+            setTitle('');
             setContent('');
             setImageUrl('');
         } catch (error) {
@@ -37,6 +40,10 @@ function AddNoteForm({ onAddNote }) {
             <div className={styles.content}>
                 <label>Id du Livre :</label>
                 <input type="text" value={idLivre} onChange={(e) => setIdLivre(e.target.value)} />
+            </div>
+            <div className={styles.content}>
+                <label>Titre du livre :</label>
+                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
             <div className={styles.content}>
                 <label>Contenu :</label>
