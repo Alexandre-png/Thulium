@@ -15,10 +15,10 @@
 }
 
 .noteItem {
-    background: #f9f9f9; /* Couleur de fond légère */
-    border-radius: 10px; /* Bords arrondis */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Ombre subtile */
-    overflow: hidden; /* Cache les débordements, important pour les bords arrondis */
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
@@ -26,35 +26,51 @@
 .noteImage {
     width: 100%;
     height: auto;
-    max-height: 120px; /* Hauteur fixe pour l'image */
-    object-fit: cover; /* S'assure que l'image couvre la zone */
+    max-height: 120px;
+    object-fit: cover;
 }
 
 .noteContent {
     padding: 15px;
-    flex: 1; /* Prend l'espace restant */
+    margin: 5px 0;
+    flex: 1;     
 }
 
-.noteContent p {
-    margin: 5px 0;
+.noteTitle {
+    font-weight: bold;
+    font-size: 1.2em;
+    display: -webkit-box; 
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
 
 .buttonContainer {
     text-align: center;
     margin-top: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
 }
 
 .deleteButton {
+    padding: 10px 15px;
+    background-color: #ff4d4d; 
+}
+
+.modifyButton {
     padding: 10px 20px;
-    background-color: #ff4d4d; /* Rouge */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: #385dff; 
 }
 
 .deleteButton:hover {
-    background-color: #cc0000; /* Rouge plus foncé */
+    background-color: #cc0000; 
+}
+
+.modifyButton:hover {
+    background-color: #263da1; 
 }
 
 @media (min-width: 600px) {
