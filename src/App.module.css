@@ -4,8 +4,12 @@ body {
     font-family: var(--font-roboto);
     background-color: var(--color-bg);
     color: var(--color-text);
+    height: 100vh;
+}
+
+.auth-container {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     height: 100vh;
 }

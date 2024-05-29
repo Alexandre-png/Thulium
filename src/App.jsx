@@ -23,8 +23,8 @@ function App() {
         <UserProvider>
           <Routes>
             <Route path="/Note" element={<Note />} />
-              <Route path="/" element={<Authentification mode="login" />} />
-              <Route path="/Register" element={<Authentification mode="register" />} />
+            <Route path="/" element={<div className={styles.authContainer}><Authentification mode="login" /></div>} />
+            <Route path="/Register" element={<div className={styles.authContainer}><Authentification mode="register" /></div>} />
           </Routes>
         </UserProvider>
       </Router>

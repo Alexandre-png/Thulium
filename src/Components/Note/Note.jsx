@@ -64,9 +64,13 @@ export const Note = () => {
                 {showAddForm || editingNote ? "Retourner à mes notes" : "Ajouter une note"}
             </button>
             {showAddForm ? (
-                <AddNoteForm onAddNote={handleAddNote} />
+                <div className={styles.centerForm}>
+                        <AddNoteForm onAddNote={handleAddNote} />
+                </div>
             ) : editingNote ? (
-                <EditNoteForm note={editingNote} onEditNote={handleAddNote} />
+                <div className={styles.centerForm}>
+                        <EditNoteForm note={editingNote} onEditNote={handleAddNote} />
+                </div>
             ) : (
                 <NoteList notes={notes} onDeleteNote={handleDeleteNote} onEditNote={handleEditNote} />
             )}
