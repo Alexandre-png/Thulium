@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NoteList from './List/NoteList';
 import AddNoteForm from './Create/AddNoteForm';
+import EditNoteForm from './Edit/EditNoteForm';
 import styles from './Note.module.css';
 import { useUser } from '../../Context/UserContext';
 
 export const Note = () => {
     const [notes, setNotes] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [editingNote, setEditingNote] = useState(null);
     const { userId } = useUser();
 
 
@@ -20,13 +22,13 @@ export const Note = () => {
             console.error('Erreur lors de la récupération des notes:', error);
         }
     };
-    
-    // Fonction pour ajouter une note
+
+
     const handleAddNote = async () => {
         fetchNotes();
     };
 
-    // Fonction pour supprimer une note
+
     const handleDeleteNote = async (id) => {
         try {
             await axios.delete(`/api/Note/${id}`);
@@ -36,25 +38,37 @@ export const Note = () => {
         }
     };
 
+    const handleEditNote = (note) => {
+        setEditingNote(note);
+        setShowAddForm(false);
+    };
+
     useEffect(() => {
         if (userId) {
             fetchNotes();
         }
     }, [userId]);
 
-    const toggleForm = () => setShowAddForm(!showAddForm);
+    const toggleForm = () => {
+        setShowAddForm(!showAddForm);
+        setEditingNote(null);
+    };
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>Gestion des notes</h1>
-            <h2 className={styles.actionTitle}>{showAddForm ? "Ajout d'une note" : "Liste des notes"}</h2>
+            <div className={styles.header}>
+                <h1 className={styles.brandName}>Scribeo /</h1>
+                <h1 className={styles.title}>{showAddForm ? "Écriture" : "Mes notes"} </h1>
+            </div>
             <button onClick={toggleForm} className={styles.floatingButton}>
-                {showAddForm ? "Retourner à mes notes" : "Ajouter une note"}
+                {showAddForm || editingNote ? "Retourner à mes notes" : "Ajouter une note"}
             </button>
             {showAddForm ? (
                 <AddNoteForm onAddNote={handleAddNote} />
+            ) : editingNote ? (
+                <EditNoteForm note={editingNote} onEditNote={handleAddNote} />
             ) : (
-                <NoteList notes={notes} onDeleteNote={handleDeleteNote} />
+                <NoteList notes={notes} onDeleteNote={handleDeleteNote} onEditNote={handleEditNote} />
             )}
         </div>
     );

@@ -1,0 +1,40 @@
+@import "../../../var.css";
+
+.container{
+    margin-top: 76px;
+    color: var(--color-text);
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.content{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.title{
+    font-size: 35px;
+    font-weight: 700;
+    letter-spacing: 1.75px;
+    text-transform: uppercase;
+}
+
+.imagePreview {
+    margin-top: 1rem;
+    max-width: 100%;
+    max-height: 200px;
+}
+
+.editButton {
+    background-color: #007BFF; /* Blue */
+}
+
+.editButton:hover {
+    background-color: #0056b3; /* Darker blue */
+}

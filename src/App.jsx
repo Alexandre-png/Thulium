@@ -23,8 +23,8 @@ function App() {
         <UserProvider>
           <Routes>
             <Route path="/Note" element={<Note />} />
-            <Route path="/" element={<Authentification mode="login" />} />
-            <Route path="/Register" element={<Authentification mode="register" />} />
+              <Route path="/" element={<Authentification mode="login" />} />
+              <Route path="/Register" element={<Authentification mode="register" />} />
           </Routes>
         </UserProvider>
       </Router>
