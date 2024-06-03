@@ -7,7 +7,12 @@
     margin-right: 10%;
 }
 
-.content{
+.infoLivre {
+    display: flex;
+    justify-content: baseline;
+}
+
+.content {
     margin-top: 1rem;
     display: flex;
     flex-direction: row;
@@ -18,17 +23,11 @@
     width: 100%;
 }
 
-.title{
+.title {
     font-size: 35px;
     font-weight: 700;
     letter-spacing: 1.75px;
     text-transform: uppercase;
-}
-
-.imagePreview {
-    margin-top: 1rem;
-    max-width: 100%;
-    max-height: 200px;
 }
 
 .editButton {

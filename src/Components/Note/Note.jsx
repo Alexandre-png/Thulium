@@ -10,6 +10,7 @@ export const Note = () => {
     const [notes, setNotes] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
     const [editingNote, setEditingNote] = useState(null);
+    const [formMode, setFormMode] = useState(null);
     const { userId } = useUser();
 
 
@@ -23,12 +24,6 @@ export const Note = () => {
         }
     };
 
-
-    const handleAddNote = async () => {
-        fetchNotes();
-    };
-
-
     const handleDeleteNote = async (id) => {
         try {
             await axios.delete(`/api/Note/${id}`);
@@ -38,9 +33,26 @@ export const Note = () => {
         }
     };
 
-    const handleEditNote = (note) => {
+    const handleAddNote = async () => {
+        fetchNotes();
+        setShowAddForm(false);
+        setFormMode(null);
+    };
+
+    const handleEditNote = async () => {
+        fetchNotes();
+    };
+
+    const startAddingNote = () => {
+        setShowAddForm(true);
+        setEditingNote(null);
+        setFormMode('add');
+    };
+
+    const startEditingNote = (note) => {
         setEditingNote(note);
         setShowAddForm(false);
+        setFormMode('edit');
     };
 
     useEffect(() => {
@@ -49,32 +61,34 @@ export const Note = () => {
         }
     }, [userId]);
 
-    const toggleForm = () => {
-        setShowAddForm(!showAddForm);
+    const goBackToList = () => {
+        setShowAddForm(false);
         setEditingNote(null);
-    };
+        setFormMode(null);
+    }
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <h1 className={styles.brandName}>Scribeo /</h1>
-                <h1 className={styles.title}>{showAddForm ? "Écriture" : "Mes notes"} </h1>
+                <h1 className={styles.title}>
+                    {formMode === 'add' ? "Écriture" : formMode === 'edit' ? "Modifier la note" : "Mes notes"}
+                </h1>
             </div>
-            <button onClick={toggleForm} className={styles.floatingButton}>
-                {showAddForm || editingNote ? "Retourner à mes notes" : "Ajouter une note"}
+            <button onClick={formMode ? goBackToList : startAddingNote} className={styles.floatingButton}>
+                {formMode ? "Retourner à mes notes" : "Ajouter une note"}
             </button>
-            {showAddForm ? (
+            {formMode === 'add' ? (
                 <div className={styles.centerForm}>
-                        <AddNoteForm onAddNote={handleAddNote} />
+                    <AddNoteForm onAddNote={handleAddNote} />
                 </div>
-            ) : editingNote ? (
+            ) : formMode === 'edit' ? (
                 <div className={styles.centerForm}>
-                        <EditNoteForm note={editingNote} onEditNote={handleAddNote} />
+                    <EditNoteForm note={editingNote} onEditNote={handleEditNote} />
                 </div>
             ) : (
-                <NoteList notes={notes} onDeleteNote={handleDeleteNote} onEditNote={handleEditNote} />
+                <NoteList notes={notes} onDeleteNote={handleDeleteNote} onEditNote={startEditingNote} />
             )}
         </div>
     );
-
 }

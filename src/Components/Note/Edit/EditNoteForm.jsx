@@ -1,40 +1,61 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './EditNoteForm.module.css';
+import { useUser } from '../../../Context/UserContext';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import Dropzone from '../Component/DropZone/DropZone';
+import Popup from '../Component/Popup/PopUp';
+
 
 function EditNoteForm({ note, onEditNote }) {
-    const [idLivre, setIdLivre] = useState(note.idLivre);
+    const { userId } = useUser();
+
     const [title, setTitle] = useState(note.title);
     const [content, setContent] = useState(note.content);
+    const [imageUrl, setImageUrl] = useState(note.imageUrl || '');
+
     const [imageFile, setImageFile] = useState(null);
-    const [imagePreview, setImagePreview] = useState(note.imageUrl);
+    const [imagePreview, setImagePreview] = useState(note.imageUrl || '');
+
+    const [popupMessage, setPopupMessage] = useState('');
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const handleImageDrop = (preview, file) => {
+        setImagePreview(preview);
+        setImageFile(file);
+        setImageUrl('');
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            let imageUrl = note.imageUrl;
+            let finalImageUrl = imageUrl ? imageUrl : note.ImageUrl;
+
             if (imageFile) {
                 const formData = new FormData();
                 formData.append('imageFile', imageFile);
-                formData.append('userId', note.idOwner);
 
-                const uploadResponse = await axios.post(`/api/Image/upload`, formData, {
+                const uploadResponse = await axios.post(`/api/Image/${userId}/upload`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
 
-                imageUrl = `/uploads/${uploadResponse.data.fileName}`;
+                finalImageUrl = `http://localhost:5100/uploads/${uploadResponse.data.fileName}`;
+                setImageUrl(finalImageUrl);
             }
 
             await axios.put(`/api/Note/${note.id}`, {
-                IdOwner: note.idOwner,
-                IdLivre: idLivre,
+                Id: note.id,
+                IdOwner: userId,
                 Title: title,
                 Content: content,
-                ImageUrl: imageUrl
+                ImageUrl: finalImageUrl || null
             });
+
+            showPopup('Note sauvegardée avec succès');
 
             onEditNote();
         } catch (error) {
@@ -42,31 +63,31 @@ function EditNoteForm({ note, onEditNote }) {
         }
     };
 
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        setImageFile(file);
-        setImagePreview(URL.createObjectURL(file));
+    const showPopup = (message) => {
+        setPopupMessage(message);
+        setIsPopupOpen(true);
+        setTimeout(() => {
+            setIsPopupOpen(false);
+        }, 3000);
     };
 
     return (
         <form onSubmit={handleSubmit} className={styles.container}>
-            <div className={styles.content}>
-                <label>Id du Livre :</label>
-                <input type="text" value={idLivre} onChange={(e) => setIdLivre(e.target.value)} />
-            </div>
-            <div className={styles.content}>
+            <Dropzone onImageDrop={handleImageDrop} imagePreview={imagePreview} />
+            <div className={styles.infoLivre}>
                 <label>Titre du livre :</label>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                <input type="text" placeholder="Titre de votre livre" value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
             <div className={styles.content}>
                 <label>Contenu :</label>
-                <input type="text" value={content} onChange={(e) => setContent(e.target.value)} />
+                <ReactQuill value={content} onChange={setContent} />
             </div>
-            <div className={styles.content}>
-                <label>Image :</label>
-                <input type="file" onChange={handleFileChange} />
-                {imagePreview && <img src={imagePreview} alt="Preview" className={styles.imagePreview} />}
-            </div>
+            {isPopupOpen && (
+                <Popup
+                    message={popupMessage}
+                    onClose={() => setIsPopupOpen(false)}
+                />
+            )}
             <button className={styles.editButton} type="submit">Modifier la note</button>
         </form>
     );
