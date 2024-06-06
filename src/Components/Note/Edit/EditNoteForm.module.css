@@ -1,6 +1,6 @@
 @import "../../../var.css";
 
-.container{
+.container {
     margin-top: 76px;
     color: var(--color-text);
     margin-left: 10%;
@@ -10,30 +10,52 @@
 .infoLivre {
     display: flex;
     justify-content: baseline;
+    margin-bottom: 1rem;
 }
 
 .content {
+    background-color: white;
     margin-top: 1rem;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: end;
-    justify-content: center;
-    gap: 15px;
+    flex-direction: column;
     width: 100%;
 }
 
-.title {
-    font-size: 35px;
-    font-weight: 700;
-    letter-spacing: 1.75px;
-    text-transform: uppercase;
+.react-quill {
+    height: calc(100vh - 300px);
+    margin-bottom: 1rem;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
 }
 
 .editButton {
-    background-color: #007BFF; /* Blue */
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .editButton:hover {
-    background-color: #0056b3; /* Darker blue */
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .react-quill {
+        height: calc(100vh - 200px); /* Adjust height for smaller screens */
+    }
+
+    .buttonContainer {
+        justify-content: center;
+    }
+
+    .editButton {
+        width: 100%;
+    }
 }

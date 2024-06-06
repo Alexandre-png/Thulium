@@ -1,8 +1,17 @@
 import React from 'react';
+import ReactHtmlParser from "html-react-parser";
+import DOMPurify from "dompurify";
+import htmlTruncate from 'html-truncate';
 import styles from './NoteList.module.css';
 import placeholderImage from '../../../assets/imageFiller.png';
 
 function NoteList({ notes, onDeleteNote, onEditNote }) {
+
+    const truncateAndSanitize = (html, maxLength) => {
+        const truncatedHtml = htmlTruncate(html, maxLength);
+        return ReactHtmlParser(DOMPurify.sanitize(truncatedHtml));
+    };
+
     return (
         <section className={styles.container}>
             <div className={styles.notes}>
@@ -14,8 +23,10 @@ function NoteList({ notes, onDeleteNote, onEditNote }) {
                                 className={styles.bannerImage}
                             />
                             <div className={styles.noteContent}>
-                                <p className={styles.noteTitle}><strong>{note.title}</strong> </p>
-                                <p className={styles.noteContent}>{note.content.substring(0, 25)}</p>
+                                <p className={styles.noteTitle}><strong>{note.title}</strong></p>
+                                <div className={styles.noteContent}>
+                                    {truncateAndSanitize(note.content, 24)}
+                                </div>
                             </div>
                             <div className={styles.buttonContainer}>
                                 <button onClick={() => onEditNote(note)} className={styles.editButton}>

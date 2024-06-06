@@ -56,6 +56,9 @@
 }
 
 @media (min-width: 300px) {
+    .container{
+        padding-bottom: 60px;
+    }
     .title {
         font-size: 1rem;
     }

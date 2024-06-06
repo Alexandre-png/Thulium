@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import NoteList from './List/NoteList';
 import AddNoteForm from './Create/AddNoteForm';
@@ -16,6 +17,7 @@ export const Note = () => {
     const [editingNote, setEditingNote] = useState(null);
     const [formMode, setFormMode] = useState(null);
     const { userId } = useUser();
+    const navigate = useNavigate();
 
 
     const fetchNotes = async () => {
@@ -69,7 +71,8 @@ export const Note = () => {
     };
 
     const handleLogOut = () => {
-
+        sessionStorage.removeItem('authToken');
+        navigate("/Login");
     }
 
     const handleEditAccount = () => {
@@ -106,6 +109,18 @@ export const Note = () => {
             fetchNotes();
         }
     }, [userId]);
+
+    useEffect(() => {
+        const handleWindowClose = (event) => {
+            sessionStorage.removeItem('authToken');
+        };
+    
+        window.addEventListener('beforeunload', handleWindowClose);
+    
+        return () => {
+            window.removeEventListener('beforeunload', handleWindowClose);
+        };
+    }, []);
 
     return (
         <div className={styles.container}>

@@ -75,11 +75,9 @@ function EditNoteForm({ note, onEditNote }) {
         <form onSubmit={handleSubmit} className={styles.container}>
             <Dropzone onImageDrop={handleImageDrop} imagePreview={imagePreview} />
             <div className={styles.infoLivre}>
-                <label>Titre du livre :</label>
                 <input type="text" placeholder="Titre de votre livre" value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
             <div className={styles.content}>
-                <label>Contenu :</label>
                 <ReactQuill value={content} onChange={setContent} />
             </div>
             {isPopupOpen && (
@@ -88,7 +86,9 @@ function EditNoteForm({ note, onEditNote }) {
                     onClose={() => setIsPopupOpen(false)}
                 />
             )}
-            <button className={styles.editButton} type="submit">Modifier la note</button>
+            <div className={styles.buttonContainer}>
+                <button className={styles.editButton} type="submit">Modifier la note</button>
+            </div>
         </form>
     );
 }
