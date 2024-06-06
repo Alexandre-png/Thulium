@@ -8,7 +8,7 @@ const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
     const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
-    const location = useLocation(); // Obtenez l'objet location pour accéder au chemin actuel
+    const location = useLocation();
 
 
     useEffect(() => {

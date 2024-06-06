@@ -3,12 +3,16 @@ import axios from 'axios';
 import NoteList from './List/NoteList';
 import AddNoteForm from './Create/AddNoteForm';
 import EditNoteForm from './Edit/EditNoteForm';
+import Profile from '../User/Profile/Profile';
 import styles from './Note.module.css';
 import { useUser } from '../../Context/UserContext';
+import Account from '../User/Account/Account';
 
 export const Note = () => {
     const [notes, setNotes] = useState([]);
+    const [userInfo, setUserInfo] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [showAccountForm, setShowAccountForm] = useState(false);
     const [editingNote, setEditingNote] = useState(null);
     const [formMode, setFormMode] = useState(null);
     const { userId } = useUser();
@@ -24,6 +28,26 @@ export const Note = () => {
         }
     };
 
+    const fetchUser = async () => {
+        if (!userId) return;
+        try {
+            const token = sessionStorage.getItem('authToken');
+            if (!token) {
+                console.error('Token not found');
+                return;
+            }
+
+            const response = await axios.get(`/api/Utilisateur/profile`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setUserInfo(response.data);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des informations utilisateur:', error);
+        }
+    };
+
     const handleDeleteNote = async (id) => {
         try {
             await axios.delete(`/api/Note/${id}`);
@@ -36,6 +60,7 @@ export const Note = () => {
     const handleAddNote = async () => {
         fetchNotes();
         setShowAddForm(false);
+        setShowAccountForm(false);
         setFormMode(null);
     };
 
@@ -43,15 +68,36 @@ export const Note = () => {
         fetchNotes();
     };
 
+    const handleLogOut = () => {
+
+    }
+
+    const handleEditAccount = () => {
+        fetchUser();
+        setShowAccountForm(true);
+        setEditingNote(null);
+        setShowAddForm(false);
+        setFormMode('account');
+    }
+
+    const goBackToList = () => {
+        setShowAddForm(false);
+        setEditingNote(null);
+        setShowAccountForm(false);
+        setFormMode(null);
+    }
+
     const startAddingNote = () => {
         setShowAddForm(true);
         setEditingNote(null);
+        setShowAccountForm(false);
         setFormMode('add');
     };
 
     const startEditingNote = (note) => {
         setEditingNote(note);
         setShowAddForm(false);
+        setShowAccountForm(false);
         setFormMode('edit');
     };
 
@@ -61,20 +107,15 @@ export const Note = () => {
         }
     }, [userId]);
 
-    const goBackToList = () => {
-        setShowAddForm(false);
-        setEditingNote(null);
-        setFormMode(null);
-    }
-
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h1 className={styles.brandName}>Scribeo /</h1>
+                <Profile onLogOut={handleLogOut} onEditAccount={handleEditAccount} onListNote={goBackToList} />
                 <h1 className={styles.title}>
-                    {formMode === 'add' ? "Écriture" : formMode === 'edit' ? "Modifier la note" : "Mes notes"}
+                    {formMode === 'add' ? "Écriture" : formMode === 'edit' ? "Modifier" : formMode === 'account' ? "Compte" : "Notes"}
                 </h1>
             </div>
+
             <button onClick={formMode ? goBackToList : startAddingNote} className={styles.floatingButton}>
                 {formMode ? "Retourner à mes notes" : "Ajouter une note"}
             </button>
@@ -85,6 +126,10 @@ export const Note = () => {
             ) : formMode === 'edit' ? (
                 <div className={styles.centerForm}>
                     <EditNoteForm note={editingNote} onEditNote={handleEditNote} />
+                </div>
+            ) : formMode === 'account' ? (
+                <div className={styles.centerForm}>
+                    <Account user={userInfo} />
                 </div>
             ) : (
                 <NoteList notes={notes} onDeleteNote={handleDeleteNote} onEditNote={startEditingNote} />

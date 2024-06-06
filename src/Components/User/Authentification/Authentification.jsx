@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Authentification.module.css';
+import Popup from '../../Note/Component/Popup/PopUp';
+
 
 export const Authentification = ({ mode }) => {
     const [email, setEmail] = useState('');
@@ -10,6 +12,9 @@ export const Authentification = ({ mode }) => {
     const [passwordFocused, setPasswordFocused] = useState(false);
     const [isValidEmail, setIsValidEmail] = useState(true);
     const navigate = useNavigate();
+
+    const [popupMessage, setPopupMessage] = useState('');
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -34,6 +39,14 @@ export const Authentification = ({ mode }) => {
         setPasswordFocused(false);
     };
 
+    const showPopup = (message) => {
+        setPopupMessage(message);
+        setIsPopupOpen(true);
+        setTimeout(() => {
+            setIsPopupOpen(false);
+        }, 3000);
+    };
+
     const validatePassword = (password) => {
         let errors = [];
         if (password.length < 6) errors.push("- 6 caractères.");
@@ -49,6 +62,7 @@ export const Authentification = ({ mode }) => {
 
         if (!isValidEmail || passwordErrors.length > 0) {
             console.error('Email ou mot de passe invalide.');
+            showPopup('Email ou mot de passe invalide');
             return;
         }
 
@@ -62,6 +76,11 @@ export const Authentification = ({ mode }) => {
             navigate(successRedirect);
         } catch (error) {
             console.error(`Erreur lors de ${mode} :`, error);
+            if (mode == 'login') {
+                showPopup(`Erreur lors de la connexion, l'email et/ou mot de passe est invalide`);
+            } else {
+                showPopup(`Erreur lors de l'inscription, l'email et/ou mot de passe est invalide`);
+            }
         }
     };
 
@@ -85,6 +104,12 @@ export const Authentification = ({ mode }) => {
                             ))}
                         </ul>
                     </div>
+                )}
+                {isPopupOpen && (
+                    <Popup
+                        message={popupMessage}
+                        onClose={() => setIsPopupOpen(false)}
+                    />
                 )}
                 <button type='submit' className={styles.submitButton}>
                     {mode === 'login' ? 'Se connecter' : 'S\'inscrire'}

@@ -3,7 +3,6 @@ import styles from './NoteList.module.css';
 import placeholderImage from '../../../assets/imageFiller.png';
 
 function NoteList({ notes, onDeleteNote, onEditNote }) {
-
     return (
         <section className={styles.container}>
             <div className={styles.notes}>

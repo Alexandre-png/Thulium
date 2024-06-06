@@ -65,6 +65,7 @@ function AddNoteForm({ onAddNote }) {
             showPopup('Note sauvegardée avec succès');
         } catch (error) {
             console.error('Erreur lors de la soumission du formulaire:', error);
+            showPopup('Erreur lors de la soumission du formulaire. Vérifier le Titre et le contenu');
         }
     };
 
@@ -87,6 +88,12 @@ function AddNoteForm({ onAddNote }) {
                 <label>Contenu :</label>
                 <ReactQuill value={content} onChange={setContent} />
             </div>
+            {isPopupOpen && (
+                <Popup
+                    message={popupMessage}
+                    onClose={() => setIsPopupOpen(false)}
+                />
+            )}
             <button className={styles.button} type="submit">Ajouter une note</button>
         </form>
     );
