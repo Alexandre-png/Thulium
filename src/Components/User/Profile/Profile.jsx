@@ -31,7 +31,7 @@ function Profile({onLogOut, onEditAccount, onListNote}) {
 
     return (
         <div className={styles.dropdown} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <h1 className={styles.dropdownButton} onClick={handleClick}> <span className={styles.arrow}>&#9662;</span> Scribeo/ </h1>
+            <h1 className={styles.dropdownButton} onClick={handleClick}>Scribeo <span className={styles.arrow}>&#9662;</span>/ </h1>
             {isOpen && (
                 <div className={styles.dropdownContent}>
                     <a onClick={() => onEditAccount()}>Mon compte</a>

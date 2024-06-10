@@ -84,6 +84,7 @@ export const Note = () => {
     }
 
     const goBackToList = () => {
+        fetchUser();
         setShowAddForm(false);
         setEditingNote(null);
         setShowAccountForm(false);
@@ -107,6 +108,7 @@ export const Note = () => {
     useEffect(() => {
         if (userId) {
             fetchNotes();
+            fetchUser();
         }
     }, [userId]);
 
