@@ -7,10 +7,10 @@ Scribeo est une application de prise de notes inspirée de Pinterest. Ce dépôt
 ## Fonctionnalités
 
 - Authentification des utilisateurs
+- Gestion du compte utilisateur (modification des informations et de l'image de profil)
+- Affichage des notes de l'utilisateur
 - Création, modification et suppression de notes
 - Gestion des images pour les notes
-- Affichage des notes de l'utilisateur
-- Gestion du compte utilisateur (modification des informations et de l'image de profil)
 
 ## Dépendances
 
