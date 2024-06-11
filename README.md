@@ -35,7 +35,7 @@ Pour voir toutes les dépendances, consultez le fichier `package.json`.
 
 1. Clonez le dépôt
    ```bash
-   git clone https://github.com/votre-utilisateur/votre-repo-frontend.git
+   git clone https://github.com/Alexandre-png/Thulium.git
 
 2. Installez les dépendances
    npm install
@@ -45,13 +45,14 @@ Pour voir toutes les dépendances, consultez le fichier `package.json`.
 
 ## Structure du Projet :
 ```
- |-> src/ : Contient le code source de l'application
-     |-> App.jsx : Composant principal de l'application
-     |-> Context : Contient des fonctions JSX pour obtenir un context (l'id utilisateur par exemple)
-     |-> Components : Composants principal de l'application
-        |-> Note : Composants pour le système de note
-        |-> User : Composants pour le système d'utilisateur
-     |-> Assets : Composant principal de l'application
+src/
+├── App.jsx                  # Composant principal de l'application
+├── Context/                 # Contient des fonctions JSX pour obtenir un context (l'id utilisateur par exemple)
+├── Components/              # Composants principaux de l'application
+│   ├── Note/                # Composants pour le système de notes
+│   └── User/                # Composants pour le système d'utilisateur
+└── Assets/                  # Contient des ressources statiques (images, styles, etc.)
+
 ```
 
 ## Contribution
