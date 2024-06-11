@@ -44,6 +44,7 @@ Pour voir toutes les dépendances, consultez le fichier `package.json`.
    npm start
 
 ## Structure du Projet :
+```
  |-> src/ : Contient le code source de l'application
      |-> App.jsx : Composant principal de l'application
      |-> Context : Contient des fonctions JSX pour obtenir un context (l'id utilisateur par exemple)
@@ -51,6 +52,7 @@ Pour voir toutes les dépendances, consultez le fichier `package.json`.
         |-> Note : Composants pour le système de note
         |-> User : Composants pour le système d'utilisateur
      |-> Assets : Composant principal de l'application
+```
 
 ## Contribution
 Les contributions sont les bienvenues ! Veuillez ouvrir une issue pour discuter des changements que vous souhaitez apporter.
